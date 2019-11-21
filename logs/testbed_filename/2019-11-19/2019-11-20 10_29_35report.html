@@ -108,9 +108,13 @@
     }
 
     function showClassDetail(cid){
+        console.log(cid)
         var id_list=[];
         var elem_list=[]
         var toHide=1;
+        //用一个参数记录自身有没有被关闭,如果自身被关闭，那后面的节点都需要关闭，1为open,0为close
+        var status=1
+
         var cidnumber=cid.substr(2)+'.';
         var re = new RegExp('^'+cidnumber);
         var tr_list=document.getElementsByTagName('tr');
@@ -121,15 +125,18 @@
             elem_list.push(tr_list[i])
             }
         }
+        console.log(id_list)
         for (var i = 0; i < id_list.length; i++) {
             var elem = elem_list[i]
             var tid = id_list[i];
             if (elem.className.indexOf('hiddenRow')>-1){
-            console.log(elem.className)
+
             toHide=0;
+
             }
             if (toHide) {
                 document.getElementById(tid).classList.add('hiddenRow');
+                //当前节点被影藏，后面的节点也必须被隐藏
             }
             else {
                 document.getElementById(tid).classList.remove('hiddenRow');
@@ -172,7 +179,7 @@
 
 
     <div class="btn-group btn-group-sm">
-        <button class="btn btn-default" onclick='javascript:(0)'>总结</button>
+        <button class="btn btn-default" onclick='javascript:showCase(0)'>总结</button>
         <button class="btn btn-default" onclick='javascript:showCase(1)'>失败</button>
         <button class="btn btn-default" onclick='javascript:showCase(2)'>全部</button>
     </div>
@@ -208,7 +215,7 @@
     <td class='none'><div class='testcase'>test_flashback1</div></td>
     <td colspan='5' align='center'>
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" >
+    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
         通过</a>
     <!--css div popup end-->
     </td>
@@ -218,7 +225,7 @@
     <td class='errorCase'><div class='testcase'>test_flashback2</div></td>
     <td colspan='5' align='center'>
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" >
+    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank" >
         错误</a>
     <!--css div popup end-->
     </td>
@@ -228,7 +235,7 @@
     <td class='none'><div class='testcase'>test_flashback3</div></td>
     <td colspan='5' align='center'>
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" >
+    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
         通过</a>
     <!--css div popup end-->
     </td>
@@ -253,7 +260,7 @@
     <td class='none'><div class='testcase'>test_rman1</div></td>
     <td colspan='5' align='center'>
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" >
+    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         通过</a>
     <!--css div popup end-->
     </td>
@@ -262,7 +269,7 @@
     <td class='errorCase'><div class='testcase'>test_rman2</div></td>
     <td colspan='5' align='center'>
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" >
+    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         错误</a>
     <!--css div popup end-->
     </td>
@@ -281,7 +288,7 @@
     <td class='none'><div class='testcase'>test_rman1</div></td>
     <td colspan='5' align='center'>
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" >
+    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         通过</a>
     <!--css div popup end-->
     </td>
@@ -291,7 +298,7 @@
     <td class='errorCase'><div class='testcase'>test_rman2</div></td>
     <td colspan='5' align='center'>
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" >
+    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         错误</a>
     <!--css div popup end-->
     </td>
@@ -301,7 +308,7 @@
     <td class='none'><div class='testcase'>test_rman3</div></td>
     <td colspan='5' align='center'>
     <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" >
+    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         通过</a>
     <!--css div popup end-->
     </td>
