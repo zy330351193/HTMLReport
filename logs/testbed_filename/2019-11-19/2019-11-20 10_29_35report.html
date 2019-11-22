@@ -12,7 +12,7 @@
 <style type="text/css" media="screen">
     body        { font-family: Microsoft YaHei,Consolas,arial,sans-serif; font-size: 80%; }
     table       { font-size: 100%; }
-    pre         { white-space: pre-wrap;word-wrap: break-word; }
+
     /* -- heading ---------------------------------------------------------------------- */
     h1 {
         font-size: 16pt;
@@ -38,16 +38,12 @@
     }
 
     /* -- report ------------------------------------------------------------------------ */
-    #show_detail_line {
-        margin-top: 3ex;
-        margin-bottom: 1ex;
-    }
+
     #result_table {
         width: 99%;
     }
     #header_row {
         font-weight: bold;
-
         color: #303641;
         background-color: #B15BFF;
     }
@@ -183,7 +179,7 @@
     <div class="btn-group btn-group-sm">
         <button class="btn btn-default" onclick='javascript:showCase(0)'>总结</button>
         <button class="btn btn-default" onclick='javascript:showCase(1)'>失败</button>
-        <button class="btn btn-default" onclick='javascript:showCase(2)'>全部</button>
+        <!--<button class="btn btn-default" onclick='javascript:showCase(2)'>全部</button>-->
     </div>
     <p></p>
     <table id='result_table' class="table table-bordered">
@@ -205,7 +201,7 @@
         </tr>
         
     <tr class='grade1Class' id="gd1">
-        <td>Flashback</td>
+        <td >Flashback</td>
         <td>3</td>
         <td>2</td>
         <td>0</td>
@@ -216,30 +212,30 @@
 <tr id='pt1.1' class='hiddenRow '>
     <td class='none'><div class='testcase'>test_flashback1</div></td>
     <td colspan='5' align='center'>
-    <!--css div popup start-->
+    
     <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
         通过</a>
-    <!--css div popup end-->
+    
     </td>
 </tr>
 
 <tr id='ft1.2' class='none'>
     <td class='errorCase'><div class='testcase'>test_flashback2</div></td>
     <td colspan='5' align='center'>
-    <!--css div popup start-->
+    
     <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank" >
         错误</a>
-    <!--css div popup end-->
+    
     </td>
 </tr>
 
 <tr id='pt1.3' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_flashback3</div></td>
     <td colspan='5' align='center'>
-    <!--css div popup start-->
+    
     <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
         通过</a>
-    <!--css div popup end-->
+    
     </td>
 </tr>
     <tr class='hiddenRow grade2Class' id="gd1.1">
@@ -261,19 +257,19 @@
 <tr id='pt1.1.1.1' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_rman1</div></td>
     <td colspan='5' align='center'>
-    <!--css div popup start-->
+    
     <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         通过</a>
-    <!--css div popup end-->
+    
     </td>
 </tr>
 <tr id='ft1.1.1.2' class='none'>
     <td class='errorCase'><div class='testcase'>test_rman2</div></td>
     <td colspan='5' align='center'>
-    <!--css div popup start-->
+    
     <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         错误</a>
-    <!--css div popup end-->
+    
     </td>
 </tr>
 
@@ -289,30 +285,30 @@
 <tr id='pt2.1' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_rman1</div></td>
     <td colspan='5' align='center'>
-    <!--css div popup start-->
+    
     <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         通过</a>
-    <!--css div popup end-->
+    
     </td>
 </tr>
 
 <tr id='ft2.2' class='none'>
     <td class='errorCase'><div class='testcase'>test_rman2</div></td>
     <td colspan='5' align='center'>
-    <!--css div popup start-->
+    
     <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         错误</a>
-    <!--css div popup end-->
+    
     </td>
 </tr>
 
 <tr id='pt2.3' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_rman3</div></td>
     <td colspan='5' align='center'>
-    <!--css div popup start-->
+    
     <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
         通过</a>
-    <!--css div popup end-->
+    
     </td>
 </tr>
 
