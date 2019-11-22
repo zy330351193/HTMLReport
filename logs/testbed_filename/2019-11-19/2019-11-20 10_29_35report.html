@@ -111,11 +111,29 @@
 
             if (id.substr(0,2) == 'ft') {
             //在此处添加显示上级目录的方法
+               // console.log(id)
+                var l=id.split('.');
+               // console.log(l)
+
+            while(l.length > 1){l.pop();
+                pid=l.join('.')
+                pid='gd'+pid.substr(2);
+                console.log(pid);
+                if (level >= 1){
+                console.log('aaaaaa:',document.getElementById(pid));
+                document.getElementById(pid).classList.remove('hiddenRow');
+                }
+            }
+
+
+
+
 
                 if (level < 1) {
                     tr.className = 'hiddenRow';
                 }
                 else {
+
                     tr.className = '';
                 }
             }
