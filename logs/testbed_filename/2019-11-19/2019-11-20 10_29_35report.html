@@ -45,21 +45,24 @@
     #header_row {
         font-weight: bold;
         color: #303641;
-        background-color: #B15BFF;
+        background-color: #8E8E8E;
     }
     #total_row  { font-weight: bold; }
     .passClass  { background-color: #bdedbc; }
     .failClass  { background-color: #ffefa4; }
-    .grade1Class { background-color: #8E8E8E; }
-    .grade2Class { background-color: #ADADAD; }
-    .grade3Class { background-color: #d0d0d0; }
-    .grade4Class { background-color: #E0E0E0; }
-    .grade5Class { background-color: #F0F0F0; }
+    .grade1Class { background-color: #d0d0d0; }
+    .grade2Class { background-color: #d0d0d0; margin-left: 1em;}
+    .grade3Class { background-color: #d0d0d0; margin-left: 2em;}
+    .grade4Class { background-color: #d0d0d0; margin-left: 3em;}
+    .grade5Class { background-color: #d0d0d0; margin-left: 4m;}
+    .grade2Case    { margin-left: 1em; }
+    .grade3Case    { margin-left: 2em; }
+    .grade4Case    { margin-left: 3em; }
+    .grade5Case    { margin-left: 4em; }
     .passCase   { color: #6c6; }
     .failCase   { color: #FF6600; font-weight: bold; }
     .errorCase  { color: #c00; font-weight: bold; }
     .hiddenRow  { display: none; }
-    .testcase   { margin-left: 2em; }
     /* -- ending ---------------------------------------------------------------------- */
     #ending {
     }
@@ -81,9 +84,31 @@
     /* level - 0:Summary; 1:Failed; 2:All */
     function showCase(level) {
         trs = document.getElementsByTagName("tr");
+        var gd_id_list=[]
         for (var i = 0; i < trs.length; i++) {
             tr = trs[i];
+
             id = tr.id;
+            //console.log(id);
+
+            //找到目录节点，点总结或失败的时候需恢复文本状态为展开
+            if (id.substr(0,2) == 'gd'){
+                var elem_a=document.getElementById(id).getElementsByTagName('a')[0];
+                elem_a.innerText='展开'
+
+                //console.log(id);
+
+                //找到除一级目录下的其他节点，点总结的时候将除一级目录下的其他节点都要隐藏
+                var elem_gd_id=id.split('.')
+                if (elem_gd_id.length > 1){
+                    if (level < 1){
+                    document.getElementById(id).classList.add('hiddenRow')
+                    }
+                }
+            }
+
+
+
             if (id.substr(0,2) == 'ft') {
                 if (level < 1) {
                     tr.className = 'hiddenRow';
@@ -104,11 +129,15 @@
     }
 
     function showClassDetail(cid){
+    //pid:当前点击的父节点，cid:当前节点，tid:后代节点
         //用一个状态pstatus记录当前节点的父节点状态，如果父节点存在hiddenRow属性，则当前节点不能减去hiddenRow属性
         var pstatus=1;
         var id_list=[];
         var elem_list=[]
         var toHide=1;
+        //elem_a用于记录a标签节点,替换当前节点Text内容
+        var elem_a=document.getElementById(cid).getElementsByTagName('a')[0]
+        elem_a.innerText='收起'
         var cidnumber=cid.substr(2)+'.';
         var re = new RegExp('^'+cidnumber);
         var tr_list=document.getElementsByTagName('tr');
@@ -122,6 +151,12 @@
         for (var i = 0; i < id_list.length; i++) {
             var elem = elem_list[i]
             var tid = id_list[i];
+            //找出gd部分，将text替换为‘收起’
+            if (tid.substr(0,2)=='gd'){
+            var elem_tid_a=document.getElementById(tid).getElementsByTagName('a')[0];
+            //console.log('yyyyyyyy:',elem_tid_a);
+            elem_tid_a.innerText='收起';
+            }
             var l=tid.split('.');
             while(l.length > 1){l.pop();
                 pid=l.join('.')
@@ -135,6 +170,7 @@
             }
             if (toHide) {
                 document.getElementById(tid).classList.add('hiddenRow');
+                elem_a.innerText='展开'
                 //当前节点父节点被影藏，后面的节点也必须被隐藏
             }
             else if (toHide==0 && pstatus==1){
@@ -164,12 +200,12 @@
     */
     --></script>
     <div id="div_base">
-        
+
     <div class='page-header'>
         <h1>自动化测试报告</h1>
     <p class='attribute'><strong>开始时间:</strong> 2019-11-20 10:29:35</p>
-<p class='attribute'><strong>运行时长:</strong> 0:00:00.012965</p>
-<p class='attribute'><strong>状态:</strong> 通过 4 错误 2</p>
+    <p class='attribute'><strong>运行时长:</strong> 0:00:00.012965</p>
+    <p class='attribute'><strong>状态:</strong> 通过 4 失败 2</p>
 
     </div>
     <div style="float: left;width:50%;"><p class='description'>报告详细信息</p></div>
@@ -185,145 +221,125 @@
     <table id='result_table' class="table table-bordered">
         <colgroup>
             <col align='left' />
-            <col align='right' />
-            <col align='right' />
-            <col align='right' />
-            <col align='right' />
+            <col align='center' />
+            <col align='center' />
+            <col align='center' />
             <col align='right' />
         </colgroup>
         <tr id='header_row'>
             <td><font size="2">测试用例</font></td>
             <td><font size="2">总数</font></td>
             <td><font size="2">通过</font></td>
+
             <td><font size="2">失败</font></td>
-            <td><font size="2">错误</font></td>
             <td><font size="2">查看</font></td>
         </tr>
-        
-    <tr class='grade1Class' id="gd1">
-        <td >Flashback</td>
-        <td>3</td>
-        <td>2</td>
-        <td>0</td>
-        <td>1</td>
-        <td><a href="javascript:showClassDetail('gd1')">详情</a></td>
-    </tr>
+        <tr class='grade1Class' id="gd1">
+            <td ><div class='grade1Class'>Flashback</div></td>
+            <td>3</td>
+            <td>2</td>
+            <td>1</td>
+            <td><a href="javascript:showClassDetail('gd1')">展开</a></td>
+        </tr>
+        <tr id='pt1.1' class='hiddenRow '>
+            <td class='none' colspan='4' ><div class='grade2Case '>test_flashback1</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
+                通过</a>
+            </td>
+        </tr>
+        <tr id='ft1.2' class='none'>
+            <td class='errorCase' colspan='4' ><div class='grade2Case '>test_flashback2</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank" >
+                失败</a>
+            </td>
+        </tr>
+        <tr id='pt1.3' class='hiddenRow '>
+            <td class='none' colspan='4' ><div class='grade2Case '>test_flashback3</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
+                通过</a>
+            </td>
+        </tr>
+        <tr class='hiddenRow grade2Class' id="gd1.1">
+            <td><div class='grade2Class'>Flashback1.1</div></td>
+            <td>3</td>
+            <td>2</td>
 
-<tr id='pt1.1' class='hiddenRow '>
-    <td class='none'><div class='testcase'>test_flashback1</div></td>
-    <td colspan='5' align='center'>
-    
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
-        通过</a>
-    
-    </td>
-</tr>
+            <td>1</td>
+            <td><a href="javascript:showClassDetail('gd1.1')">展开</a></td>
+        </tr>
 
-<tr id='ft1.2' class='none'>
-    <td class='errorCase'><div class='testcase'>test_flashback2</div></td>
-    <td colspan='5' align='center'>
-    
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank" >
-        错误</a>
-    
-    </td>
-</tr>
+        <tr id='pt1.1.1' class='hiddenRow '>
+            <td class='none' colspan='4' ><div class='grade3Case '>test_flashback4</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
+                通过</a>
+            </td>
+        </tr>
+        <tr class='hiddenRow grade3Class' id="gd1.1.1">
+            <td><div class='grade3Class'>Flashback1.1.1</div></td>
+            <td>3</td>
+            <td>2</td>
 
-<tr id='pt1.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_flashback3</div></td>
-    <td colspan='5' align='center'>
-    
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
-        通过</a>
-    
-    </td>
-</tr>
-    <tr class='hiddenRow grade2Class' id="gd1.1">
-        <td>Flashback1.1</td>
-        <td>3</td>
-        <td>2</td>
-        <td>0</td>
-        <td>1</td>
-        <td><a href="javascript:showClassDetail('gd1.1')">详情</a></td>
-    </tr>
-    <tr class='hiddenRow grade3Class' id="gd1.1.1">
-        <td>Flashback1.1.1</td>
-        <td>3</td>
-        <td>2</td>
-        <td>0</td>
-        <td>1</td>
-        <td><a href="javascript:showClassDetail('gd1.1.1')">详情</a></td>
-    </tr>
-<tr id='pt1.1.1.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_rman1</div></td>
-    <td colspan='5' align='center'>
-    
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
-        通过</a>
-    
-    </td>
-</tr>
-<tr id='ft1.1.1.2' class='none'>
-    <td class='errorCase'><div class='testcase'>test_rman2</div></td>
-    <td colspan='5' align='center'>
-    
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
-        错误</a>
-    
-    </td>
-</tr>
+            <td>1</td>
+            <td><a href="javascript:showClassDetail('gd1.1.1')">展开</a></td>
+        </tr>
+        <tr id='ft1.1.1.1' class='none'>
+            <td class='errorCase' colspan='4' ><div class='grade4Case '>test_flashback5</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank" >
+                失败</a>
+            </td>
+        </tr>
+        <tr id='ft1.1.1.2' class='none'>
+            <td class='errorCase' colspan='4' ><div class='grade4Case '>test_flashback6</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank" >
+                失败</a>
+            </td>
+        </tr>
 
-    <tr class='grade1Class' id="gd2">
-        <td>Rman</td>
-        <td>3</td>
-        <td>2</td>
-        <td>0</td>
-        <td>1</td>
-        <td><a href="javascript:showClassDetail('gd2')">详情</a></td>
-    </tr>
+        <tr class='grade1Class' id="gd2">
+            <td>Rman</td>
+            <td>3</td>
+            <td>2</td>
 
-<tr id='pt2.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_rman1</div></td>
-    <td colspan='5' align='center'>
-    
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
-        通过</a>
-    
-    </td>
-</tr>
-
-<tr id='ft2.2' class='none'>
-    <td class='errorCase'><div class='testcase'>test_rman2</div></td>
-    <td colspan='5' align='center'>
-    
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
-        错误</a>
-    
-    </td>
-</tr>
-
-<tr id='pt2.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_rman3</div></td>
-    <td colspan='5' align='center'>
-    
-    <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_02.html" target="_blank">
-        通过</a>
-    
-    </td>
-</tr>
-
+            <td>1</td>
+            <td><a href="javascript:showClassDetail('gd2')">展开</a></td>
+        </tr>
+        <tr id='pt2.1' class='hiddenRow '>
+            <td class='none' colspan='4' ><div class='grade2Case '>rman1</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
+                通过</a>
+            </td>
+        </tr>
+        <tr id='ft2.2' class='none'>
+            <td class='errorCase' colspan='4' ><div class='grade2Case '>rman2</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank" >
+                失败</a>
+            </td>
+        </tr>
+        <tr id='pt2.3' class='hiddenRow '>
+            <td class='none' colspan='4' ><div class='grade2Case '>rman3</div></td>
+            <td align='center'>
+            <a class="popup_link" onfocus='this.blur();' href="./casedir/subcasedir/tc_01.html" target="_blank">
+                通过</a>
+            </td>
+        </tr>
         <tr id='total_row'>
             <td>总计</td>
             <td>6</td>
             <td>4</td>
-            <td>0</td>
+
             <td>2</td>
             <td>&nbsp;</td>
         </tr>
     </table>
-
         <div id='ending'>&nbsp;</div>
-        
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('chart'));
@@ -337,11 +353,11 @@
                 trigger: 'item',
                 formatter: "{a} {b} : {c} ({d}%)"
             },
-            color: ['#95b75d', 'grey', '#b64645'],
+            color: ['#95b75d',  '#b64645'],
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: ['通过','失败','错误']
+                data: ['通过','失败']
             },
             series : [
                 {
@@ -351,8 +367,7 @@
                     center: ['50%', '60%'],
                     data:[
                         {value:4, name:'通过'},
-                        {value:0, name:'失败'},
-                        {value:2, name:'错误'}
+                        {value:2, name:'失败'}
                     ],
                     itemStyle: {
                         emphasis: {
