@@ -108,13 +108,11 @@
     }
 
     function showClassDetail(cid){
-        console.log(cid)
+        //用一个状态pstatus记录当前节点的父节点状态，如果父节点存在hiddenRow属性，则当前节点不能减去hiddenRow属性
+        var pstatus=1;
         var id_list=[];
         var elem_list=[]
         var toHide=1;
-        //用一个参数记录自身有没有被关闭,如果自身被关闭，那后面的节点都需要关闭，1为open,0为close
-        var status=1
-
         var cidnumber=cid.substr(2)+'.';
         var re = new RegExp('^'+cidnumber);
         var tr_list=document.getElementsByTagName('tr');
@@ -125,25 +123,29 @@
             elem_list.push(tr_list[i])
             }
         }
-        console.log(id_list)
         for (var i = 0; i < id_list.length; i++) {
             var elem = elem_list[i]
             var tid = id_list[i];
+            var l=tid.split('.');
+            while(l.length > 1){l.pop();
+                pid=l.join('.')
+                pid='gd'+pid.substr(2);
+                if (document.getElementById(pid).className.indexOf('hiddenRow')>-1){
+                pstatus=0;
+                }
+            }
             if (elem.className.indexOf('hiddenRow')>-1){
-
             toHide=0;
-
             }
             if (toHide) {
                 document.getElementById(tid).classList.add('hiddenRow');
-                //当前节点被影藏，后面的节点也必须被隐藏
+                //当前节点父节点被影藏，后面的节点也必须被隐藏
             }
-            else {
+            else if (toHide==0 && pstatus==1){
                 document.getElementById(tid).classList.remove('hiddenRow');
             }
         }
     }
-
     function html_escape(s) {
         s = s.replace(/&/g,'&amp;');
         s = s.replace(/</g,'&lt;');
@@ -202,7 +204,7 @@
             <td><font size="2">查看</font></td>
         </tr>
         
-    <tr class='none grade1Class' id="gd1">
+    <tr class='grade1Class' id="gd1">
         <td>Flashback</td>
         <td>3</td>
         <td>2</td>
@@ -275,7 +277,7 @@
     </td>
 </tr>
 
-    <tr class='none grade1Class' id="gd2">
+    <tr class='grade1Class' id="gd2">
         <td>Rman</td>
         <td>3</td>
         <td>2</td>
