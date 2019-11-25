@@ -3,16 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>自动化测试报告</title>
-    <meta name="generator" content="HTMLTestRunner 0.9.1"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="UTF-8"/>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.common.min.js"></script>
-    <!-- <script type="text/javascript" src="js/echarts.common.min.js"></script> -->
-
 <style type="text/css" media="screen">
     body        { font-family: Microsoft YaHei,Consolas,arial,sans-serif; font-size: 80%; }
     table       { font-size: 100%; }
-
     /* -- heading ---------------------------------------------------------------------- */
     h1 {
         font-size: 16pt;
@@ -36,7 +32,6 @@
     a.popup_link:hover {
         color: red;
     }
-
     /* -- report ------------------------------------------------------------------------ */
 
     #result_table {
@@ -63,9 +58,6 @@
     .failCase   { color: #FF6600; font-weight: bold; }
     .errorCase  { color: #c00; font-weight: bold; }
     .hiddenRow  { display: none; }
-    /* -- ending ---------------------------------------------------------------------- */
-    #ending {
-    }
     #div_base {
                 position:absolute;
                 top:0%;
@@ -76,12 +68,10 @@
                 margin: -15px 0 0 0;
     }
 </style>
-
 </head>
 <body>
     <script language="javascript" type="text/javascript"><!--
-    output_list = Array();
-    /* level - 0:Summary; 1:Failed; 2:All */
+
     function showCase(level) {
         trs = document.getElementsByTagName("tr");
         for (var i = 0; i < trs.length; i++) {
@@ -90,7 +80,7 @@
             //找到目录节点，点总结或失败的时候需恢复文本状态为展开
             if (id.substr(0,2) == 'gd'){
                 var elem_a=document.getElementById(id).getElementsByTagName('a')[0];
-                if (level==1){
+                if (level>=1){
                 elem_a.innerText='收起'
                 }
                 if (level==0){
@@ -110,7 +100,7 @@
                 while(l.length > 1){l.pop();
                     pid=l.join('.');
                     pid='gd'+pid.substr(2);
-                    if (level == 1){
+                    if (level >= 1){
                     document.getElementById(pid).classList.remove('hiddenRow');
                     }
                 }
@@ -118,13 +108,15 @@
                     tr.className = 'hiddenRow';
                 }
                 else {
-
                     tr.className = '';
                 }
             }
             if (id.substr(0,2) == 'pt') {
                 if (level <= 1) {
                     tr.className = 'hiddenRow';
+                }
+                else {
+                    tr.className = '';
                 }
             }
         }
@@ -148,7 +140,7 @@
             elem_list.push(tr_list[i])
             }
         }
-        // county用于计数有多少个节点隐藏
+        // count用于计数有多少个节点隐藏
         var count=0
         for (var i = 0; i < elem_list.length; i++) {
             var elem = elem_list[i]
@@ -188,13 +180,13 @@
             }
         }
     }
+
     function html_escape(s) {
         s = s.replace(/&/g,'&amp;');
         s = s.replace(/</g,'&lt;');
         s = s.replace(/>/g,'&gt;');
         return s;
     }
-
     //此函数计算表格目录所显示的总数
     window.onload=function(){
         //表格总计
@@ -221,6 +213,7 @@
         document.getElementById('All_count').innerText=all_count;
         document.getElementById('Pass_count').innerText=pass_count;
         document.getElementById('Fail_count').innerText=fail_count;
+        document.getElementById('collect').innerHTML='<strong>状态: </strong>'+'通过:'+pass_count+'失败:'+fail_count
 
         //各层级表格计数
         for (var i=0; i<gds.length;i++){
@@ -233,7 +226,6 @@
             var cidnumber=id.substr(2)+'.';
             var re_pass = new RegExp('^pt'+cidnumber);
             var re_fail = new RegExp('^ft'+cidnumber);
-
             trs = document.getElementsByTagName("tr");
             for (var j=0;j<trs.length;j++){
                 var tr=trs[j].id;
@@ -249,51 +241,25 @@
             document.getElementById(id).children[1].innerText=all_count
             document.getElementById(id).children[2].innerText=pass_count
             document.getElementById(id).children[3].innerText=fail_count
-
-
-
         }
-
-
-
-
     }
-
-
-    /* obsoleted by detail in <div>
-    function showOutput(id, name) {f
-        var w = window.open("", //url
-                        name,
-                        "resizable,scrollbars,status,width=800,height=450");
-        d = w.document;
-        d.write("<pre>");
-        d.write(html_escape(output_list[id]));
-        d.write("\n");
-        d.write("<a href='javascript:window.close()'>close</a>\n");
-        d.write("</pre>\n");
-        d.close();
-    }
-    */
     --></script>
     <div id="div_base">
-
     <div class='page-header'>
         <h1>自动化测试报告</h1>
     <p class='attribute'><strong>开始时间:</strong> 2019-11-20 10:29:35</p>
     <p class='attribute'><strong>运行时长:</strong> 0:00:00.012965</p>
-    <p class='attribute'><strong>状态:</strong> 通过 4 失败 2</p>
-
+    <p class='attribute' id="collect"></p>
     </div>
     <div style="float: left;width:50%;"><p class='description'>报告详细信息</p></div>
     <div id="chart" style="width:50%;height:400px;float:left;"></div>
-
-
     <div class="btn-group btn-group-sm">
         <button class="btn btn-default" onclick='javascript:showCase(0)'>总结</button>
         <button class="btn btn-default" onclick='javascript:showCase(1)'>失败</button>
-        <!--<button class="btn btn-default" onclick='javascript:showCase(2)'>全部</button>-->
+        <button class="btn btn-default" onclick='javascript:showCase(2)'>全部</button>
     </div>
     <p></p>
+
     <table id='result_table' class="table table-bordered">
         <colgroup>
             <col align='left' />
@@ -306,7 +272,6 @@
             <td><font size="2">测试用例</font></td>
             <td><font size="2">总数</font></td>
             <td><font size="2">通过</font></td>
-
             <td><font size="2">失败</font></td>
             <td><font size="2">查看</font></td>
         </tr>
@@ -345,7 +310,6 @@
             <td></td>
             <td><a href="javascript:showClassDetail('gd1.1')">展开</a></td>
         </tr>
-
         <tr id='pt1.1.1' class='hiddenRow '>
             <td class='none' colspan='4' ><div class='grade3Case '>test_flashback4</div></td>
             <td align='center'>
@@ -353,7 +317,6 @@
                 通过</a>
             </td>
         </tr>
-
         <tr id='ft1.1.2' class='hiddenRow'>
             <td class='errorCase' colspan='4' ><div class='grade3Case '>test_flashback4.1</div></td>
             <td align='center'>
@@ -361,8 +324,6 @@
                 失败</a>
             </td>
         </tr>
-
-
         <tr class='hiddenRow grade3Class' id="gd1.1.1">
             <td><div class='grade3Class'>Flashback1.1.1</div></td>
             <td></td>
@@ -391,7 +352,6 @@
                 通过</a>
             </td>
         </tr>
-
         <tr class='grade1Class' id="gd2">
             <td>Rman</td>
             <td></td>
@@ -428,13 +388,11 @@
             <td>&nbsp;</td>
         </tr>
     </table>
-        <div id='ending'>&nbsp;</div>
+
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-
         var pass_count=0;
         var fail_count=0;
-
         trs = document.getElementsByTagName("tr");
         for (var i = 0; i < trs.length; i++) {
             tr = trs[i];
@@ -486,7 +444,6 @@
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     </script>
-
     </div>
 </body>
 </html>
