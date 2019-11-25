@@ -84,13 +84,10 @@
     /* level - 0:Summary; 1:Failed; 2:All */
     function showCase(level) {
         trs = document.getElementsByTagName("tr");
-
         for (var i = 0; i < trs.length; i++) {
             tr = trs[i];
-
             id = tr.id;
             //console.log(id);
-
             //找到目录节点，点总结或失败的时候需恢复文本状态为展开
             if (id.substr(0,2) == 'gd'){
                 var elem_a=document.getElementById(id).getElementsByTagName('a')[0];
@@ -108,9 +105,6 @@
                     }
                 }
             }
-
-
-
             if (id.substr(0,2) == 'ft') {
             //在此处添加显示上级目录的方法
                 var l=id.split('.');
@@ -202,6 +196,31 @@
         s = s.replace(/>/g,'&gt;');
         return s;
     }
+
+    //此函数计算表格总数
+    window.onload=function(){
+        var all_count=0;
+        var pass_count=0;
+        var fail_count=0;
+        trs = document.getElementsByTagName("tr");
+        for (var i = 0; i < trs.length; i++) {
+            tr = trs[i];
+            id = tr.id;
+            if (id.substr(0,2) == 'pt'){
+            pass_count = pass_count + 1;
+            }
+            if (id.substr(0,2) == 'ft'){
+            fail_count = fail_count + 1;
+            }
+        }
+        all_count = pass_count + fail_count
+        console.log(all_count)
+        document.getElementById('All_count').innerText=all_count
+        document.getElementById('Pass_count').innerText=pass_count
+        document.getElementById('Fail_count').innerText=fail_count
+    }
+
+
     /* obsoleted by detail in <div>
     function showOutput(id, name) {
         var w = window.open("", //url
@@ -367,9 +386,9 @@
         </tr>
         <tr id='total_row'>
             <td>总计</td>
-            <td>6</td>
-            <td>4</td>
-            <td>2</td>
+            <td id="All_count"></td>
+            <td id="Pass_count"></td>
+            <td id="Fail_count"></td>
             <td>&nbsp;</td>
         </tr>
     </table>
