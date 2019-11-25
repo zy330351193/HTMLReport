@@ -87,7 +87,6 @@
         for (var i = 0; i < trs.length; i++) {
             tr = trs[i];
             id = tr.id;
-            //console.log(id);
             //找到目录节点，点总结或失败的时候需恢复文本状态为展开
             if (id.substr(0,2) == 'gd'){
                 var elem_a=document.getElementById(id).getElementsByTagName('a')[0];
@@ -134,7 +133,6 @@
     function showClassDetail(cid){
     //pid:当前点击的父节点，cid:当前节点，tid:后代节点
         //用一个状态pstatus记录当前节点的父节点状态，如果父节点存在hiddenRow属性，则当前节点不能减去hiddenRow属性
-        console.log('cid==>',cid)
         var pstatus=1;
         var elem_list=[]
         var toHide=1;
@@ -197,15 +195,21 @@
         return s;
     }
 
-    //此函数计算表格总数
+    //此函数计算表格目录所显示的总数
     window.onload=function(){
+        //表格总计
         var all_count=0;
         var pass_count=0;
         var fail_count=0;
+        var gds=[];
         trs = document.getElementsByTagName("tr");
         for (var i = 0; i < trs.length; i++) {
             tr = trs[i];
             id = tr.id;
+            //将目录元素加到元组中
+            if (id.substr(0,2) == 'gd'){
+            gds.push(tr)
+            }
             if (id.substr(0,2) == 'pt'){
             pass_count = pass_count + 1;
             }
@@ -213,16 +217,55 @@
             fail_count = fail_count + 1;
             }
         }
-        all_count = pass_count + fail_count
-        console.log(all_count)
-        document.getElementById('All_count').innerText=all_count
-        document.getElementById('Pass_count').innerText=pass_count
-        document.getElementById('Fail_count').innerText=fail_count
+        all_count = pass_count + fail_count;
+        document.getElementById('All_count').innerText=all_count;
+        document.getElementById('Pass_count').innerText=pass_count;
+        document.getElementById('Fail_count').innerText=fail_count;
+
+        //各层级表格计数
+        for (var i=0; i<gds.length;i++){
+            gd=gds[i];
+            id=gd.id
+            console.log('id=>',id)
+            all_count=0;
+            pass_count=0;
+            fail_count=0;
+            //找到当前gd节点的后代节点
+            var cidnumber=id.substr(2)+'.';
+            var re_pass = new RegExp('^pt'+cidnumber);
+            var re_fail = new RegExp('^ft'+cidnumber);
+
+            trs = document.getElementsByTagName("tr");
+            for (var j=0;j<trs.length;j++){
+                var tr=trs[j].id;
+                if (re_pass.test(tr)){
+                pass_count = pass_count +1;
+                }
+                if (re_fail.test(tr)){
+                fail_count = fail_count +1;
+                }
+            }
+            all_count = pass_count + fail_count
+            console.log('all_count',all_count)
+            console.log('pass_count',pass_count)
+            console.log('fail_count',fail_count)
+            //子节点[1]:总数，[2]:通过，[3]:失败
+            document.getElementById(id).children[1].innerText=all_count
+            document.getElementById(id).children[2].innerText=pass_count
+            document.getElementById(id).children[3].innerText=fail_count
+
+
+
+        }
+
+
+
+
     }
 
 
     /* obsoleted by detail in <div>
-    function showOutput(id, name) {
+    function showOutput(id, name) {f
         var w = window.open("", //url
                         name,
                         "resizable,scrollbars,status,width=800,height=450");
@@ -273,9 +316,9 @@
         </tr>
         <tr class='grade1Class' id="gd1">
             <td ><div class='grade1Class'>Flashback</div></td>
-            <td>3</td>
-            <td>2</td>
-            <td>1</td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td><a href="javascript:showClassDetail('gd1')">展开</a></td>
         </tr>
         <tr id='pt1.1' class='hiddenRow '>
@@ -301,10 +344,9 @@
         </tr>
         <tr class='hiddenRow grade2Class' id="gd1.1">
             <td><div class='grade2Class'>Flashback1.1</div></td>
-            <td>3</td>
-            <td>2</td>
-
-            <td>1</td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td><a href="javascript:showClassDetail('gd1.1')">展开</a></td>
         </tr>
 
@@ -327,10 +369,9 @@
 
         <tr class='hiddenRow grade3Class' id="gd1.1.1">
             <td><div class='grade3Class'>Flashback1.1.1</div></td>
-            <td>3</td>
-            <td>2</td>
-
-            <td>1</td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td><a href="javascript:showClassDetail('gd1.1.1')">展开</a></td>
         </tr>
         <tr id='ft1.1.1.1' class='hiddenRow'>
@@ -357,10 +398,9 @@
 
         <tr class='grade1Class' id="gd2">
             <td>Rman</td>
-            <td>3</td>
-            <td>2</td>
-
-            <td>1</td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td><a href="javascript:showClassDetail('gd2')">展开</a></td>
         </tr>
         <tr id='pt2.1' class='hiddenRow '>
