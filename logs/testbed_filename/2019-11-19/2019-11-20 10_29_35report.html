@@ -94,7 +94,12 @@
             //找到目录节点，点总结或失败的时候需恢复文本状态为展开
             if (id.substr(0,2) == 'gd'){
                 var elem_a=document.getElementById(id).getElementsByTagName('a')[0];
+                if (level==1){
+                elem_a.innerText='收起'
+                }
+                if (level==0){
                 elem_a.innerText='展开'
+                }
                 //找到除一级目录下的其他节点，点总结的时候将除一级目录下的其他节点都要隐藏
                 var elem_gd_id=id.split('.')
                 if (elem_gd_id.length > 1){
@@ -108,21 +113,14 @@
 
             if (id.substr(0,2) == 'ft') {
             //在此处添加显示上级目录的方法
-               // console.log(id)
                 var l=id.split('.');
-               // console.log(l)
-
                 while(l.length > 1){l.pop();
                     pid=l.join('.');
                     pid='gd'+pid.substr(2);
-
                     if (level == 1){
-
                     document.getElementById(pid).classList.remove('hiddenRow');
                     }
                 }
-
-
                 if (level == 0) {
                     tr.className = 'hiddenRow';
                 }
@@ -131,7 +129,6 @@
                     tr.className = '';
                 }
             }
-
             if (id.substr(0,2) == 'pt') {
                 if (level <= 1) {
                     tr.className = 'hiddenRow';
@@ -159,6 +156,8 @@
             elem_list.push(tr_list[i])
             }
         }
+        // county用于计数有多少个节点隐藏
+        var count=0
         for (var i = 0; i < elem_list.length; i++) {
             var elem = elem_list[i]
             var tid = elem_list[i].id;
@@ -167,16 +166,25 @@
             var elem_tid_a=document.getElementById(tid).getElementsByTagName('a')[0];
             elem_tid_a.innerText='收起';
             }
+            //如果当前节点的后节点全部存在hiddenRow属性，则toHide=0
+            if (elem.className.indexOf('hiddenRow')>-1){
+            count = count +1
+            }
+        }
+        if (count == elem_list.length){
+        toHide=0;
+        }
+        for (var i = 0; i < elem_list.length; i++) {
+            var elem = elem_list[i]
+            var tid = elem_list[i].id;
             var l=tid.split('.');
             while(l.length > 1){l.pop();
                 pid=l.join('.')
                 pid='gd'+pid.substr(2);
                 if (document.getElementById(pid).className.indexOf('hiddenRow')>-1){
+                //当pstatus==0时，说明子节点上级目录有影藏的目录，此时不能只展开子目录，否则上级目录影藏
                 pstatus=0;
                 }
-            }
-            if (elem.className.indexOf('hiddenRow')>-1){
-            toHide=0;
             }
             if (toHide) {
                 document.getElementById(tid).classList.add('hiddenRow');
